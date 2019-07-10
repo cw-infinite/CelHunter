@@ -24,6 +24,8 @@ Any static content would be served up from the S3 bucket itself
 Give public read access to everyone for the bucket but restrict put/write operations to only the EC2 instance
 --> easy to do; this restricts editing to only come from the Alfresco instance e.g. random person can't go and edit it. bucket owners (us) could still edit it
 
+Alternatively, we might have to host the website on the EC2 instance and just the storage on S3. Or find some way to go back and forth between the two in the cheapest way possible
+
 Here's how I imagine the architecture working
 
 Anonymous User types in www.celbugs.com <-- this takes them to the S3 bucket
