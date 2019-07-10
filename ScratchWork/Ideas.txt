@@ -1,1 +1,47 @@
-test
+Things needed for this
+
+1) EC2 instance running alfresco
+2) S3 bucket with the same name as the website's DNS name
+3) A VPC endpoint to allow connection between S3 and EC2 directly so it doesn't have to go over public internet
+4) Security groups / network ACL's to allow the communication from #3. Shouldn't be difficult.
+5) IAM policy to allow the EC2 instance to write to S3 along with a bucket policy on S3 (explained later) along with STS to provide it the credentials needed
+6) EBS volume?
+
+Also need to look into AWS Lightsail instead of EC2. At a glance it looks about the same price though.
+
+We need a small EBS volume on the EC2 instance so we can permanently have a user database to authenticate people.
+
+We need to create a bucket on S3 called www.celbugs.com (or whatever the name will be)
+
+Also need an Amazon EC2 instance to host Linux/Alfresco. Not sure about size. Should probably go with T2/T3 series. T2 medium is 4 gb RAM. T2 large is 8 gb RAM. We can convert at any time so not a big deal but need to test.
+
+--> Since the content is going to be served to users directly from the S3 bucket, is a lot needed? The smaller we go, the cheaper it is (by a lot).
+
+The photo upload and whatever other editing would be done from the Alfresco backend and whatever frontend being hosted on the ec2 instance
+
+Any static content would be served up from the S3 bucket itself
+
+Give public read access to everyone for the bucket but restrict put/write operations to only the EC2 instance
+--> easy to do; this restricts editing to only come from the Alfresco instance e.g. random person can't go and edit it. bucket owners (us) could still edit it
+
+Here's how I imagine the architecture working
+
+Anonymous User types in www.celbugs.com <-- this takes them to the S3 bucket
+Anonymous User can click around to view all the galleries and <-- this is still serving content from the S3 bucket
+Anonymous User finds a cool gallery. It's URL is www.celbugs.com/Cool_User <-- still on S3 bucket
+Anonymous User clicks "login" so they can edit their gallery <-- this is the point at which our Alfresco application gets involved. traffic goes to the EC2 instance
+Anonymous User is authenticated and is now User1. <-- is this done via Tomcat or via Alfresco?
+User1 navigates
+**Somehow, User1's permissions are such that any edit he makes can ONLY happen against his own bucket, www.celbugs.com/User1
+
+**Current issues that need to get worked out**
+How to have permissions such that an authenticated user can ONLY edit files in their bucket, www.celbugs.com/User*
+--> This is important to figure out in terms of architecture. I think it would involve permissions at the tomcat level but maybe Alfresco's AWS connector has something we can use
+If the website is serving from S3 and is static content only, how can a user submit a request to create an account?
+---> I think this can be handled by using a Lambda function. Could also have this part link to our alfresco instance to request an account or 
+Can we set up the DNS and VPC Endpoint so that our EC2 instance is completely private, and only able to be accessed from S3? e.g. only by clicking on the login link.
+--> I know you can have the S3 bucket private with a public EC2 instance, but I'm not sure about the other way around.
+Can we set up the search function on the S3 bucket?? This would have to be dynamically generated
+--> Need to look into going back and forth on the website between EC2 and S3. Maybe clicking on "search galleries" points back to the EC2 instance or something.
+
+Once it's mature, we can look into offloading traffic onto Cloudfront. It's $0.085/gb-month. so serving out 10 GB per month would cost 85 cents. Is caching on cloudfront cheaper than serving from S3? Who knows. Too detailed for now.
