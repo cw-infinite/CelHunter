@@ -1,0 +1,247 @@
+AWS resource pricing
+
+==========================================================================EC2==========================================================================
+
+EC2 (Elastic Cloud Computer) is AWS's rent-a-server serice. Note that 
+
+There's 3 ways to pay for AWS EC2-related resources:
+
+	On-Demand: this is when you just spin up the resource as needed and can shut down when done. Only pay when it's being used.
+	Spot: this is when AWS has extra resources that aren't being used. You can bid for that resource against other people to temporarily use those resources. Usually the cheapest option, but if someone bids over you, then you get kicked off the resource
+	Reserved: this is when you reserve for either 1 year or 3 years. Cheapest is to pay 100% up-front. If there's a failure at a facility, you're guaranteed to have your stuff brought back online first.
+
+In terms of what we'd use, it'd be the following:
+
+	On-demand: most expensive (for long-term permanent use) but most flexible and should be used for dev/test work
+	Spot: least expensive (usually) but you can lose access at any time. Shouldn't really use for our case unless it's super duper cheap and we're doing non-critical work
+	Reserved: use for the final product
+
+There are 3 types of servers we can use that would be good for us:
+
+	t-class instances allow for CPU bursting based on a credit system where you accumulate credits when you aren't going above your limit and should be what we go with
+	m-class instances are just generic servers. m5.large was the smallest one that they had
+	r-class instances are optomized for memory usage. r5.large was the smallest one that they had
+
+A couple quick notes regarding reserved instances:
+	When you use standard reserved instances, you can change the Availability Zone (aka location), the size (aka large vs small), and the networking type
+	When you use convertible reserved instances, you can also use different instance families (aka m vs t), operating systems, or tenancies
+
+*We don't really need the convertible types
+
+For Linux EC2 Instances On-Demand:
+
+Instance Type		vCPUs	ECU		Memory		Instance Sotrage	Price
+t3.small		2	Variable	2 GiB		EBS Only		$0.0208 per Hour
+t3.medium		2	Variable	4 GiB		EBS Only		$0.0416 per Hour
+t3.large		2	Variable	8 GiB		EBS Only		$0.0832 per Hour
+m5.large		2	8		8 GiB		EBS Only		$0.096 per Hour
+r5.large		2	9		16 GiB		EBS Only		$0.126 per Hour
+
+For Linux EC2 Instances Reserved:
+
+						T3.small
+STANDARD 1-YEAR TERM
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$9.49		$0.013			38%			|	$0.0208
+Partial Upfront		$54		$4.53		$0.012			41%			|	$0.0208
+All Upfront		$107		$0.00		$0.012			41%			|	$0.0208
+
+CONVERTIBLE 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$10.95		$0.015			28%			|	$0.0208
+Partial Upfront		$63		$5.18		$0.014			31%			|	$0.0208
+All Upfront		$123		$0.00		$0.014			32%			|	$0.0208
+
+STANDARD 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$6.57		$0.009			57%			|	$0.0208
+Partial Upfront		$109		$3.07		$0.008			60%			|	$0.0208
+All Upfront		$206		$0.00		$0.008			62%			|	$0.0208
+
+CONVERTIBLE 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$7.52		$0.010			50%			|	$0.0208
+Partial Upfront		$126		$3.50		$0.010			54%			|	$0.0208
+All Upfront		$246		$0.00		$0.009			55%			|	$0.0208
+
+						T3.medium
+STANDARD 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$19.05		$0.026			37%			|	$0.0416
+Partial Upfront		$109		$9.05		$0.025			40%			|	$0.0416
+All Upfront		$213		$0.00		$0.024			42%			|	$0.0416
+
+CONVERTIBLE 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand 	|	On-Demand Hourly
+No Upfront		$0		$21.90		$0.030			28%			|	$0.0416
+Partial Upfront		$125		$10.44		$0.029			31%			|	$0.0416
+All Upfront		$245		$0.00		$0.028			33%			|	$0.0416
+
+STANDARD 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$13.14		$0.018			57%			|	$0.0416
+Partial Upfront		$219		$6.06		$0.017			60%			|	$0.0416
+All Upfront		$412		$0.00		$0.016			62%			|	$0.0416
+
+CONVERTIBLE 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$15.04		$0.021			50%			|	$0.0416
+Partial Upfront		$251		$7.01		$0.019			54%			|	$0.0416
+All Upfront		$492		$0.00		$0.019			55%			|	$0.0416
+
+						T3.large
+STANDARD 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$38.11		$0.052			37%			|	$0.0832
+Partial Upfront		$218		$18.10		$0.050			40%			|	$0.0832
+All Upfront		$426		$0.00		$0.049			42%			|	$0.0832
+
+CONVERTIBLE 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$43.80		$0.060			28%			|	$0.0832
+Partial Upfront		$250		$20.88		$0.057			31%			|	$0.0832
+All Upfront		$490		$0.00		$0.056			33%			|	$0.0832
+
+STANDARD 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$26.28		$0.036			57%			|	$0.0832
+Partial Upfront		$438		$12.19		$0.033			60%			|	$0.0832
+All Upfront		$823		$0.00		$0.031			62%			|	$0.0832
+
+CONVERTIBLE 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$30.15		$0.041			50%			|	$0.0832
+Partial Upfront		$502		$13.94		$0.038			54%			|	$0.0832
+All Upfront		$985		$0.00		$0.037			55%			|	$0.0832
+
+						M5.large
+STANDARD 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$44.53		$0.061			36%			|	$0.0960
+Partial Upfront		$256		$21.17		$0.058			39%			|	$0.0960
+All Upfront		$501		$0.00		$0.057			40%			|	$0.0960
+
+CONVERTIBLE 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$51.83		$0.071			26%			|	$0.0960
+Partial Upfront		$294		$24.82		$0.068			30%			|	$0.0960
+All Upfront		$577		$0.00		$0.066			31%			|	$0.0960
+
+STANDARD 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$30.66		$0.042			56%			|	$0.0960
+Partial Upfront		$515		$14.60		$0.040			59%			|	$0.0960
+All Upfront		$968		$0.00		$0.037			62%			|	$0.0960
+
+CONVERTIBLE 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$35.77		$0.049			49%			|	$0.0960
+Partial Upfront		$592		$16.79		$0.046			53%			|	$0.0960
+All Upfront		$1,161		$0.00		$0.044			54%			|	$0.0960
+
+						R5.large
+STANDARD 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$57.67		$0.079			37%			|	$0.1260
+Partial Upfront		$331		$27.74		$0.076			40%			|	$0.1260
+All Upfront		$649		$0.00		$0.074			41%			|	$0.1260
+CONVERTIBLE 1-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$66.43		$0.091			28%			|	$0.1260
+Partial Upfront		$381		$31.39		$0.086			31%			|	$0.1260
+All Upfront		$746		$0.00		$0.085			32%			|	$0.1260
+STANDARD 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$41.61		$0.057			55%			|	$0.1260
+Partial Upfront		$695		$18.98		$0.052			58%			|	$0.1260
+All Upfront		$1,307		$0.00		$0.050			61%			|	$0.1260
+CONVERTIBLE 3-YEAR TERM	
+Payment Option		Upfront		Monthly*	Effective Hourly**	Savings over On-Demand	|	On-Demand Hourly
+No Upfront		$0		$48.18		$0.066			48%			|	$0.1260
+Partial Upfront		$800		$21.90		$0.060			52%			|	$0.1260
+All Upfront		$1,567		$0.00		$0.060			53%			|	$0.1260
+
+==========================================================================EC2 Network==================================================================
+
+There's network usage charges related to data transfer involving EC2
+
+All data transfer IN		$0 per GB
+
+Data transfer OUT to Internet
+Up to 1 GB / Month		$0 per GB
+Next 9.999 TB / Month		$0.09 per GB
+Next 40 TB / Month		$0.085 per GB
+Next 100 TB / Month		$0.07 per GB
+Greater than 150 TB / Month	$0.05 per GB
+
+Data transfer OUT to other AWS regions+resources
+We don't need to use, but just know that if you're transferring within AWS' infrastructure to other regions, it's 0$ to transfer TO cloudfront and $0.01/GB to $0.02/GB for other regions
+
+AWS then says:
+
+"Rate tiers take into account your aggregate usage for Data Transfer Out to the Internet across Amazon EC2, Amazon S3, Amazon Glacier, Amazon RDS, Amazon Redshift, Amazon SES, Amazon SimpleDB, Amazon SQS, Amazon SNS, Amazon DynamoDB, AWS Storage Gateway, and Amazon CloudWatch Logs."
+
+Data transferred "in" to and "out" from Amazon EC2, Amazon RDS, Amazon Redshift , Amazon DynamoDB Accelerator (DAX), and Amazon ElastiCache instances or Elastic Network Interfaces across Availability Zones or VPC Peering connections in the same AWS Region is charged at $0.01/GB in each direction.
+
+IPv4: Data transferred “in” to and “out” from public or Elastic IPv4 address is charged at $0.01/GB in each direction.
+IPv6: Data transferred “in” to and “out” from an IPv6 address in a different VPC is charged at $0.01/GB in each direction.
+
+Data transferred between Amazon EC2, Amazon RDS, Amazon Redshift, Amazon ElastiCache instances and Elastic Network Interfaces in the same Availability Zone is free. See above when transferring data using VPC peering.
+
+Data transferred between Amazon S3, Amazon Glacier, Amazon DynamoDB, Amazon SES, Amazon SQS, Amazon Kinesis, Amazon ECR, Amazon SNS or Amazon SimpleDB and Amazon EC2 instances in the same AWS Region is free. AWS Services accessed via PrivateLink endpoints will incur standard PrivateLink charges as explained here.
+
+Data transferred "in" to and "out" from Amazon Classic and Application Elastic Load Balancers using private IP addresses, between EC2 instances and the load balancer in the same AWS Region is free."
+
+*****Bottom line*****
+
+No data charges going into the EC2 instance
+
+We won't have extra charges for data transferred between our EC2 instance and the S3 bucket no matter which architecture we choose, as long as they're in the same region (they will be)
+
+If we host the website on the EC2 instance, we have to worry about data transfer out to the general internet (i.e. serving the website out). I don't think it will be that much since it's just images.
+
+==========================================================================EBS==========================================================================
+
+EBS (Elastic Block Storage) is AWS's storage to use with EC2 instances to act as block storage. The storage that EC2 instances comes with is (usually) temporary storage that is lost on shutdown.
+
+EBS provides persistent storage. Consider these to be removable hard drives. You can also switch these between instances. So if our server goes down, we can start another one and just attach it to the new server
+
+This would be used for any local Alfresco storage e.g. the application itself, metadata, any usernames / passwords etc
+
+Four types of storage:
+	gp2 (general SSD storage) - used for most cases
+	io1 (provisioned IOPS SSD storage) - used for high-performance IOPS needs
+	st1 (throughput optomized HDD storage) - used for sequential throughput
+	sc1 (cold HDD storage) - used for infrequent data access
+
+Prices are as follows:
+	gp2 - $0.10 per GB per month
+	io1 - $0.125 per GB per month
+	st1 - $0.045 per GB per month
+	sc2 - $0.025 per GB per month
+
+There's also a snapshot service you can utilize that stores backups in S3 that is $0.05 per GB per month
+
+*Note that it backs up only the volume used, not the volume of the whole EBS; also it's differential backups, so sequential backups only store the data changed
+
+==========================================================================EIP==========================================================================
+
+EIP (Elastic IP) is a static IP address that we can assign to our EC2 instance for public addressing. If we need to shutdown the instance for whatever reason, we can release the association with IP address and assign it to a new one
+
+For instance: if our server gets corrupted or whatever, we can shut it down, and then create a completely new server and assign it to the same EIP so traffic routing won't be effected
+
+We should keep the EC2 instance private until we're ready to go-live with the website. That way we don't have to pay for EIP. We can access the instance over it's private interface.
+
+Every EC2 instance gets 1 free EIP address. You get charged if you want extra IP addresses for an instance (like multiple network interfaces):
+	$0.005 per additional IP address associated with a running instance per hour on a pro rata basis
+**You also get charged if you have an unallocated EIP address... e.g. if you shut down the instance and don't switch the EIP address to a new one:
+	$0.005 per Elastic IP address not associated with a running instance per hour on a pro rata basis
+
+In terms of mapping, you can remap the address to another server 100 times per month for free. But after that, it's $0.10 per remap per month
+
+
+
+
+
+
+
