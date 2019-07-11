@@ -1,0 +1,43 @@
+Two possible configurations:
+
+1) Host the website FROM the S3 bucket itself, as much as possible, and link to the EC2 instance any time dynamic content is needed (e.g. uploading photos or using the search engine)
+2) Host the website FROM the EC2 instance and only use S3 as pure storage for the photos
+
+The website will be structured as follows:
+
+www.celbugs.com <-- homepage
+
+	www.celbugs.com/User1 <--user 1's main gallery page. will be the html page for their gallery. This will have an intro, freetext area, and links organized by individual series
+	www.celbugs.com/User2 <--user 2's "..."
+	...
+
+		www.celbugs.com/User1/Anime1 <--another html page that will host User 1's cels from Anime 1
+		www.celbugs.com/User1/Anime2 <--same but for Anime 2
+		...
+
+		www.celbugs.com/User1/images <--will host all of User 1's images that are referenced in the html pages from the gallery to embed
+		www.celbugs.com/User2/images <--same for User 2
+
+There will also need to be a CSS bucket somewhere. Do we give one for each user so they can change on their own? or do we put one for the whole website?
+
+Maybe when user's create a gallery we can give them options to pick from a couple options?
+
+===============Option 1===============
+
+The bucket objects are set up to mirror the website's structure. S3 bucket will need to be configured as a host
+
+S3 itself will have a bucket policy to allow read access from everyone and write access ONLY from the EC2 instance (e.g. from alfresco).
+
+Will need a way to make sure that User 1 can only edit www.celbugs.com/User1 ... can't use permissions since the S3 bucket will think it's all coming from the instance and can't differentiate users
+
+Maybe there's a way to sign API requests in a way that it can tell which Alfresco user is making the change
+
+^^need to check out the Alfresco S3 connector and if that includes anything related to permissions
+
+===============Option 2===============
+
+We'd really only need S3 to store stuff so the folder structure wouldn't reall matter.
+
+Have a VPC endpoint connected to the S3 bucket and set up security groups appropriately
+
+Folder structure wouldn't matter as much; don't need to follow any convention with the bucket for it to work
