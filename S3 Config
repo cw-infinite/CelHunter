@@ -1,3 +1,5 @@
+***Note for later: I think we can create a sub-domain and use it when users click to login. That DNS record would point to the EC2 instance, allowing us to host the galleries from S3 and let them edit it from EC2
+
 Two possible configurations:
 
 1) Host the website FROM the S3 bucket itself, as much as possible, and link to the EC2 instance any time dynamic content is needed (e.g. uploading photos or using the search engine)
