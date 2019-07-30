@@ -1,0 +1,20 @@
+Cannot let users edit the raw HTML data to make their gallery look like they want
+--> issue: users being able to put a <script> tag, their own ads etc. into their gallery
+--> alternative: give them 'insertion points' like letting them to choose font, color, background image etc. through a user interface
+
+Need to put a data cap on accounts
+--> issue: a spam botnet uploading 100 TB of data and costing me $$$$
+--> alternative: put a 1GB cap on each gallery (1 gb should be enough)
+
+Need to put a data cap on images
+--> issue: uploading an insanely high-res image costing $$ and performance issues
+--> alternative: put a 10 MB cap on each photo (is that too much?)
+
+Need to validate that they're uploading photos
+--> issue: uploading some sort of script that gets executed or a video that takes up a lot of $$
+--> alternative: input validation to make sure it's a jpeg or png file (or some other validation)
+
+Need an authentication mechanism:
+--> issue: someone changing a gallery not theirs or anonymous users messing with stuff
+--> alternative: not sure yet... there's a limit of 5,000 IAM users but users might not be way to go
+--> alternative: using Cognito to give credentials and have them sign in with an OpenID provider (google, facebook etc)
