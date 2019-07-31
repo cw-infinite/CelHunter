@@ -1,0 +1,26 @@
+AWS documentation
+
+Start with the overview of AWS services
+
+Overview of AWS services: https://d1.awsstatic.com/whitepapers/aws-overview.pdf?trk=wp_card
+AWS Storage Services: https://d1.awsstatic.com/whitepapers/AWS%20Storage%20Services%20Whitepaper-v9.pdf?trk=wp_card
+
+Raw documentation:
+
+S3 (storage): https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html
+EBS (local server storage): https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html?id=docs_gateway
+EC2 (rent a server): https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+IAM (security): https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+Cloudfront (content distribution and security): https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html
+Route 53 (DNS): https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html
+
+Could be Useful:
+Cognito (mobile / OpenID authentication): https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html
+API Gateway (API management): https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html
+Lambda (execute code snippets): https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+RDS (relational databases): https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html
+DynamoDB (noSQL databases): https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+
+Ehhhhh maybeeee useful?
+SNS (notification service): https://docs.aws.amazon.com/sns/latest/dg/welcome.html
+SQS (queue service): https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
