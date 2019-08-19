@@ -1,0 +1,15 @@
+The galleries should be the sub domain and we should serve out requests from our main server
+
+So the S3 buckets that will be hosting the actual galleries, we can set it up like this:
+
+Main server is dishing out the HTTP requests for celbugs.com
+--> This lets us do dynamic content with the main page, like having a search bar or changing the recently updated, without doing lambda
+--> Can probably still use S3 to store the main page's HTML and all that but it wouldn't take up that much space anyways
+
+The bucket that the people's galleries go into could be called galleries.celbugs.com. Setting up the DNS
+
+When you click on a "galleries" button on the main page, it brings you to a page (still on the main server's celbugs.com) where you can choose the series.
+
+Once you choose the series, it presents the galleries that contain that series. When you click on a specific gallery, it hops over to galleries.celbugs.com for that gallery
+
+This might be the most flexible way. It will take some load off our server by shifting the read over to S3 for the galleries themselves. But still give us options for dynamically generating content (like a search)
