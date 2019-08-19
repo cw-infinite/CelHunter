@@ -13,3 +13,5 @@ When you click on a "galleries" button on the main page, it brings you to a page
 Once you choose the series, it presents the galleries that contain that series. When you click on a specific gallery, it hops over to galleries.celbugs.com for that gallery
 
 This might be the most flexible way. It will take some load off our server by shifting the read over to S3 for the galleries themselves. But still give us options for dynamically generating content (like a search)
+
+**or we can have the entirety of galleries.celbugs.com handle the galleries stuff (looking at line 11) and use lambda to do the search and generate the HTML with the relevant galleries. Would take even more load off. There's a product called Lambda@Edge that uses node.js to generate content for a user and return the HTML to the requestor
