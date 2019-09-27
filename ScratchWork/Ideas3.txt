@@ -1,0 +1,72 @@
+  new service combination:
+    S3                    host pictures and static web pages
+    cloudfront            cache the S3 stuff
+    dynamodb              database storage
+    lambda                functions to run
+    api gateway           call our lambda functions
+    sns                   email alerts
+    cognito               authentication
+    acm                   ssl certificates
+    R53                   DNS
+  
+  cognito is an aws-run authentication service
+    store 'user pools' - usernames for people
+    store 'identity pools' - roles/permissions for people
+        I believe the roles are aws-service roles being used; however i also believe there are ways to tie them into our application, specifically through tokens
+    handles passing off JWT's, cookies snd other authentication stuff
+    provides its own sign-in page that can be customized and allows signing up and stuff
+    50,000 monthly average users is the free limit
+    thoughts: use this to authenticate users to act as contributors and give access to page to edit their gallery
+  
+  cloudfront is a content distribution network service
+    host s3 content in the cloudfront cache; brings cost/network usage down by cachine it at edge locations, makes website faster
+    thoughts: host the s3 content (eg images and angular interface) in cloudfront
+    
+  acm (AWS certificate manager) service
+    provides free ssl certificates for the website
+    thoughts: pretty straight forward, request ssl certs using a wildcard so the whole site has https and set to https only
+     
+  sns (simple notification service)
+    provides messaging based in event triggers. pub/sub.
+    events publish to s topic and subscribers sub to that topic to get the message
+    message is configurable
+    thoughts: use to let users get emails based on when a person they sub to uploads a new image or when an anime series they sub to gets a new image added
+   
+  route53 (dns service)
+    used for name resolution and buying domain names
+    need a hosted zone that contains the dns records for a domain
+    actually need at least 2 zones. one for the https://www.website.com version and one for the https://website.com version
+         has to do with bucket redirection so users dont need to use www. can explain later, easy to set up. see s3 section
+    think we need 2 sub domains to start out with - userpanel.website.com and gallery.website.com
+         userpanel - where people can edit their gallery
+         gallery - where the galleries are hosted
+    thoughts: nothing too special, need to figure out how the sub domains work
+    
+  api gateway
+    i still dont fully understand how api's integrate into the bigger picture, i am a big dumdum
+    thoughts: pretty sure we need to to make calls to lambda functions to interact with database layer or do other things
+    
+  s3 (simple storage solution)
+    important to remember that s3 push requests are wayyy >>>> more expensive than database writes
+    therefore, we should only use s3 to store images and the gallery html files
+         don't change a gallery or add an image to gallery by changing the html and pushing the new html
+         when a user adds an image, put a reference to that image in the database with other relevant data
+         keep a template and use api gateway to request lambda to get grab the items from db dymamically
+            e.g. keep the static html and dynamically get the user's images and stuff and fill in the gallery
+            give everyone same template, easier msintenance
+    remember that traffic will be cached using cloudformation so the gets from s3 should be minimal, its puts i worry about
+    every user gets their own folder under the website bucket
+    actually hmmm... that would put the url as website.com/user
+         how to incorpoerate gallery subdomain?
+         maybe have a separate bucket for the gallery subdomain where the images and html will be stored for galleries
+         keep the website.com bucket solely for the main website
+    set up permissions so everyone can read but only user can edit their own folder
+         i think here is where cognito comes in, the token can be used to check username?
+    users should NOT upload directly to folder through aws but use our website to upload
+    give a cap of 200 mb of storage or something. also limit file size and MIME type. done through application
+    the main website;s folder can have its html stuff hosted, again use dynamodb to dynamically fill stuff in
+    the user gallery folder has an index.html file and then subfolders for each series that they have
+    when image is uploaded, user chooses anime series and that chooses / creates subfoler for that series
+    
+  dynamodb
+    will do the heavy lifting. talk about more
