@@ -1,7 +1,7 @@
-# Cellbug
-- Alfresco 6.0
+# Cellhunter
 - AWS S3
-- AWS EC2
-- Angular, ADF
-- Tomcat
-add stuff blah
+  - AWS EC2
+  = AWS Lambda 
+- Angular, Bootstrap 4
+- Serverless for dev
+
