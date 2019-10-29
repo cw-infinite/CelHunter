@@ -1,6 +1,6 @@
 ## Goals
 
-#### R&D Goal 1
+#### R&D AWS Goal 1
 - [ ] Core Serverless Services
 - [ ] Basic Logic with Lambda and API Gateway
 - [ ] Data Storage with DynamoDB
