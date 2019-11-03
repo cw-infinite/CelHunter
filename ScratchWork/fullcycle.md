@@ -1,9 +1,11 @@
 # Resources
 * [Life Cycle](#life-cycle)
-  - [Method Request](#method-request--authentication--rejection--body--head--reuqest-validation-)
+  - [Method Request](#method-request)
   - [Integration Reqeust](#integration-reqeust)
   - [Integration Response](#integration-response)
   - [Method Response](#method-response)
+* [API](#api)
+* [AWS Lambda](#aws-lambda)
 
 ## Life Cycle 
 > Client (send request)> GET method 
