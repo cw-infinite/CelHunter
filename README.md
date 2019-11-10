@@ -1,3 +1,4 @@
+> 0.1 Goal March 31st Prototype running.
 # CelHunter
 - AWS S3
   - AWS EC2
