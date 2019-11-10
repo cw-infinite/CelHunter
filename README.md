@@ -1,4 +1,4 @@
-> 0.1 Goal March 31st Prototype running.
+> CelHunter v[0.1] Goal: March 31st 2020, Prototype running.
 # CelHunter
 - AWS S3
   - AWS EC2
