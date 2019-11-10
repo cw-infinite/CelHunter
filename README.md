@@ -1,4 +1,4 @@
-# Cellhunter
+# CelHunter
 - AWS S3
   - AWS EC2
   - AWS Lambda 
