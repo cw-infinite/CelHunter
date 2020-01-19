@@ -9,3 +9,7 @@
 ## R&D 
 1. Angualar 8
 2. NgRx on Cel Hunter
+
+
+## Wireframe
+![wirefream1](https://github.com/cw-infinite/CelHunter/blob/master/ScratchWork/Prototype1.png)
